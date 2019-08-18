@@ -11,7 +11,14 @@ public class ResultForm extends HtmlElement {
     @FindBy(xpath = "//div[contains(@class, \"main-container\")]")
     private List<WebElement> resultList;
 
+    @FindBy(xpath = "//div[contains(@class, \"totalOffers\")]")
+    private HtmlElement totalOffers;
+
     public List<WebElement> getResultList() {
         return resultList;
+    }
+
+    public HtmlElement getTotalOffers() {
+        return totalOffers;
     }
 }

@@ -77,11 +77,13 @@ public class MainPage {
         waitElement(webDriver, filterForm.locationContainer)
                 .findElements(By.xpath("//div[contains(@class, \"geosuggest_widget-item\")][1]"))
                 .get(0).click();
-//        filterForm.findElements(By.xpath("//div[contains(@class, \"geosuggest_widget-item\")][1]")).get(0).click();
         return this;
     }
 
     public MainPage setCategory(String category) {
+        if (category.isEmpty()) {
+            return this;
+        }
         filterForm.category.click();
         filterForm.categoryCheckbox(category).select();
         return this;

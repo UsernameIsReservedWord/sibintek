@@ -12,7 +12,7 @@ public class ResultPage {
 
     private WebDriver webDriver;
 
-    @FindBy(xpath = "//div[contains(@class, \"card\")]")
+    @FindBy(xpath = "//div[contains(@class, \"card\")][1]")
     private ResultForm resultForm;
 
     public ResultPage(WebDriver webDriver) {
@@ -20,8 +20,9 @@ public class ResultPage {
         PageFactory.initElements(new HtmlElementDecorator(this.webDriver), this);
     }
 
-    public int getCountResultRaw() {
+    public int getTotalSortedOffers() {
         waitElement(webDriver, resultForm);
-        return resultForm.getResultList().size();
+        String totalOffers = resultForm.getTotalOffers().getText();
+        return Integer.valueOf(totalOffers.substring(0, totalOffers.indexOf(" ")));
     }
 }

@@ -1,35 +1,28 @@
 package cian;
 
-import Utils.ApplicationProperties;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-
-import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class Base {
 
-    private ApplicationProperties properties = new ApplicationProperties();
-    protected final String URL = properties.get("url");
     private WebDriver webDriver;
+    private WebDriverProperties webDriverProperties = new WebDriverProperties();
+    protected final String URL = webDriverProperties.getTarget();
 
     protected WebDriver getDriver() {
-        if (webDriver != null) {
-            return webDriver;
-        }
-        switch (properties.get("browser")) {
+        DesiredCapabilities capabilities;
+        switch (webDriverProperties.getBrowser()) {
             case "Firefox":
-                System.setProperty("webdriver.gecko.driver", properties.get("firefoxdriver"));
-                webDriver = new FirefoxDriver();
+                capabilities = DesiredCapabilities.firefox();
                 break;
             case "Chrome":
-                System.setProperty("webdriver.chrome.driver", properties.get("chromedriver"));
-                webDriver = new ChromeDriver();
+                capabilities = DesiredCapabilities.chrome();
                 break;
             default:
-                throw new IllegalArgumentException(properties.get("browser"));
+                throw new IllegalArgumentException(webDriverProperties.getBrowser());
         }
-        webDriver.manage().timeouts().implicitlyWait(Long.parseLong(properties.get("timeout")), TimeUnit.SECONDS);
+        webDriver = new RemoteWebDriver(webDriverProperties.getServer(), capabilities);
         return webDriver;
     }
 }
